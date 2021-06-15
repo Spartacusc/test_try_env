@@ -49,5 +49,5 @@ def html_to_pdf(file):
 
 
 if __name__ == '__main__':
-    # upload('https://github.com/Spartacusc/help/blob/main/zipfile.zip?raw=true')
+    upload('https://github.com/Spartacusc/help/blob/main/zipfile.zip?raw=true')
     html_to_pdf('index.html')
