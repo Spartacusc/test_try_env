@@ -2,9 +2,9 @@ import requests
 import io
 from datetime import datetime
 import zipfile
-from memory_profiler import profile
 import logging
 import pdfkit
+import tracemalloc
 
 logging.basicConfig(filename="sample.log", level=logging.INFO)
 
@@ -36,16 +36,19 @@ def upload(link):
 WKHTMLTOPDF_PATH = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 
 
-# fp = open('sample.log', 'w+')
-# @profile
 def html_to_pdf(file):
     start_time = datetime.now()
-
-    conf = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
-    pdfkit.from_file(file, 'index.pdf', configuration=conf)
+    tracemalloc.start()
+    try:
+        conf = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
+        pdfkit.from_file(file, 'index.pdf', configuration=conf)
+    except Exception:
+        pass
 
     total_time = datetime.now() - start_time
+
     logging.info(f'Время затраченное на конвертацию {total_time}')
+    logging.info(f'Память затраченная на конвертацию {tracemalloc.get_traced_memory()[1]}')
 
 
 if __name__ == '__main__':
